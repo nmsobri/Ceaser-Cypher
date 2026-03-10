@@ -26,7 +26,7 @@ main :: () {
 	input := to_string(buffer.data, bytes_read);
 	input.count -=1; // remove the newline character
 
-	// Cypher the input using a simple Caesar cipher with a shift of 1 for now
+	// Cypher the input using a simple Caesar cipher
 	for ch, i: input {
 		if ch == SPACE_CHAR continue;
 

@@ -1,9 +1,11 @@
 #import "Basic";
 #import "POSIX";
 
-UPPER_BOUND :s16: 122;
+LOWER_CASE_LOWER_BOUND :u8: 97;
+LOWER_CASE_UPPER_BOUND :s16: 122;
+UPPER_CASE_LOWER_BOUND :u8: 65;
+UPPER_CASE_UPPER_BOUND :s16: 90;
 SPACE_CHAR :: 32;
-START_CHAR :u8: 97;
 
 main :: () {
 	print("Welcome to the Caesar Cipher!\n");
@@ -26,15 +28,22 @@ main :: () {
 	input := to_string(buffer.data, bytes_read);
 	input.count -=1; // remove the newline character
 
-	// Cypher the input using a simple Caesar cipher
+	// Cypher the input using Caesar cipher
 	for ch, i: input {
-		if ch == SPACE_CHAR continue;
+		if ch >= LOWER_CASE_LOWER_BOUND && ch <= LOWER_CASE_UPPER_BOUND { // lowercase a-z
+			input[i] += cast(u8)shift_count;
+			offset := input[i] - LOWER_CASE_UPPER_BOUND;
 
-		input[i] += cast(u8)shift_count;
-		offset := input[i] - UPPER_BOUND;
+			if offset > 0 {
+				input[i] = LOWER_CASE_LOWER_BOUND + (cast(u8)offset - 1);
+			}
+		} else if ch >= UPPER_CASE_LOWER_BOUND && ch <= UPPER_CASE_UPPER_BOUND {  // uppercase A-Z
+			input[i] += cast(u8)shift_count;
+			offset := input[i] - UPPER_CASE_UPPER_BOUND;
 
-		if offset > 0 {
-			input[i] = START_CHAR + (cast(u8)offset - 1); // wrap around to first character if it goes past 'z'
+			if offset > 0 {
+				input[i] = UPPER_CASE_LOWER_BOUND + (cast(u8)offset - 1);
+			}
 		}
 	}
 
